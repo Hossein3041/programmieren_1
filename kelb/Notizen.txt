@@ -1,0 +1,1637 @@
+public static void doit(int i){
+    i = 43;
+}
+public static void main(String[] args){
+    int x = 13;
+    doit(x);
+}
+________________________________________________________________________
+Call-by-Value:
+- Vor Methodenaufruf
+    -> Wert des aktuellen Parameters x in formale Parameter i kopiert
+- Während Methodenaufruf
+    -> Es wird mit i gearbeitet
+- Nach Methodenaufruf
+    -> formale Parameter i verschwindet
+________________________________________________________________________
+Call-by-Reference
+- Vor Methodenaufruf
+    -> aktuelle Parameter x wird mit formalen Parameter i verbunden
+    -> i ist ein anderer Name für x
+- Während Methodenaufruf
+    -> wenn mit i gearbeitet wird, wird mit x gearbeitet (gelesen, geschrieben)
+- Nach Methodenaufruf
+    -> Verbindung zwischen x und i aufgehoben
+    -> formale Parameter i verschwindet
+________________________________________________________________________
+Call-by-Name
+- Vor Methodenaufruf
+    -> aktuelle Parameter x ersetzt textuell den formalen Parameter i
+- Während Methodenaufruf
+    -> jedes mal, wenn i verwendet wird, wird aktuelle Parameter x ausgewertet
+    -> ist x ein komplexer Ausdruck, so wird dieser immer wieder ausgerechnet
+- Nach Methodenaufruf
+    -> es passiert nichts
+// Ist aktueller Parameter eine einfache Variable,
+// ist Call-by-Name, identisch zu Call-by-Reference
+________________________________________________________________________
+Call-by-Result
+- Vor Methodenaufruf
+    -> Speicherort von aktuellen Parameter x wird ausgerechnet und gemerkt
+    -> für formalen Parameter i wird eine neue Variable angelegt
+- Während Methodenaufruf
+    -> es wird nur mit formalen Parameter i gearbeitet
+- Nach Methodenaufruf
+    -> Wert des formalen Parameter i wird in aktuellen Parameter x kopiert
+// Call-by-Result ist ein reiner Rückgabe-Mechanismus
+________________________________________________________________________
+Call-by-Value-Result
+- Vor Methodenaufruf
+    -> Speicherort von x wird ausgerechnet und gemerkt
+    -> Für i wird neue Variable angelegt
+    -> Wert von x wird in neue Variable i kopiert
+- Während Methodenaufruf
+    -> Es wird nur mit i gearbeitet
+- Nach Methodenaufruf
+    -> Wert von i wird in aktuellen Parameter x kopiert
+// call-by-Value-Result ist ein Ein-Ausgabe-Mechanismus.
+// Er kombiniert Call-by-Value und Call-by-Result
+________________________________________________________________________
+________________________________________________________________________
+________________________________________________________________________
+class Example{
+    static int n;
+    static void doit(int k){
+        ++n;
+        k += 4;
+        System.out.println(n);
+    }
+    static void main(String[] args){
+        n = 0;
+        doit(n);
+        System.out.println(n);
+    }
+}
+_____________________________________________________________________________
+            Call-by-Value   -   Call-by-Value-Result    -   Call-by-Reference
+_____________________________________________________________________________
+Ausgabe 1:      1                       1                           5
+Ausgabe 2:      1                       4                           5
+_____________________________________________________________________________
+_____________________________________________________________________________
+_____________________________________________________________________________
+class Example{
+    static int n = 1;
+    static int[] a = {10,20,30,40};
+
+    static void doit(int b){
+        System.out.println(b);
+        ++n;
+        System.out.println(b);
+        b += 5;
+    }
+    static void main(String[] args){
+        doit(a[n+1]);
+        System.out.println(a[0] + "" + a[1] + "" + a[2] + "" + a[3]);
+    }
+}
+_____________________________________________________________________________
+            Call-by-Value   -   Call-by-Reference    -   Call-by-Name
+_____________________________________________________________________________
+Ausgabe 1:         30                   30                      30
+Ausgabe 2:         30                   30                      40
+Ausgabe 3:  10, 20, 30, 40          10, 20, 35, 40         10, 20, 30, 45
+_____________________________________________________________________________
+                    Übung 07 - Aufgabe 02:
+int[] a = {10,20,30};
+int[] b = {1,2,3,4,5};
+int n = 0, m = 0;
+void swap(int x, y){
+    ++n;
+    int tmp = x;
+    x = y;
+    y = tmp;
+    ++m;
+}
+Geben Sie jeweils die Werte von a, b, n und m nach dem Aufruf von
+    swap(a[n],b[m])
+    swap(a[n],b[n])
+    swap(a[n],n)
+an, wenn die Werte Call-by-Value, Call-by-Value-Result, Call-by-Reference,
+Call-by-Name übergeben werden.
+_____________________________________________________________________________
+                        swap(a[n],b[m])
+_____________________________________________________________________________
+    Call-by-Value - Call-by-Value-Result - Call-by-Reference - Call-by-Name
+_____________________________________________________________________________
+a:  {10,20,30}         {1,20,30}            {1,20,30}           {10,1,30}
+b:  {1,2,3,4,5}        {10,2,3,4,5}         {10,2,3,4,5}        {20,2,3,4,5}
+n:  1                  1                    1                   1
+m:  1                  1                    1                   1
+_____________________________________________________________________________
+                        swap(a[n],b[n])
+_____________________________________________________________________________
+    Call-by-Value - Call-by-Value-Result - Call-by-Reference - Call-by-Name
+_____________________________________________________________________________
+a:  {10,20,30}      {1,20,30}              {1,20,30}           {10,2,30}
+b:  {1,2,3,4,5}     {10,2,3,4,5}           {10,2,3,4,5}        {1,20,3,4,5}
+n:  1               1                      1                   1
+m:  1               1                      1                   1
+_____________________________________________________________________________
+                        swap(a[n],n)
+_____________________________________________________________________________
+    Call-by-Value - Call-by-Value-Result - Call-by-Reference - Call-by-Name
+_____________________________________________________________________________
+a:  {10,20,30}      {0,20,30}              {1,20,30}           {10,1,30}
+b:  {1,2,3,4,5}     {1,2,3,4,5}            {1,2,3,4,5}         {1,2,3,4,5}
+n:  1               10                     10                  20
+m:  1               1                      1                   1
+_____________________________________________________________________________
+Parameter:
+...
+
+To-Do:
+1. Call-by-***
+2. U07_AFG2
+3. U07_AFG3
+4. Parameter ...
+5. U08_AFG01
+6. U08_AFG02
+7. U09_AFG03
+_____________________________________________________________________________
+Klassen und Objekte
+- Objekte: Einheiten, die während des Programmablaufs existieren
+- Ihre Eigenschaft
+    -> Welche Daten werden gespeichert
+    -> Welche Methoden gibt es
+    - werden zum Programmzeitpunkt festgelegt
+    - sind unabhängig vom Programmablauf
+    - Festlegung der Eigenschaften erfolgt durch Klasse
+- Analogien:
+    - Typ    -- Wert
+    - Klasse -- Objekt
+- In OOP: Eine Klasse ist ein Typ
+- Objekt ist ein Wert, - ist vom Typ einer Klasse
+- Java Programm: - besteht aus Menge von Klassen
+                 - eine Klasse kann mit Wort public anfangen
+- In jeder Java-Datei: - darf genau eine Klasse mit public
+                       - Klassenname muss gleich == Dateiname
+
+Beispiel für Java-Programm mit 2 Klassen
+- Beispiel ist abzuspeichern in Datei "Top.java"
+    -> Der Dateiname muss dem Namen der öffentlichen Klasse entsprechen
+
+class Juhu{
+    public static void doit(){
+        System.out.println("ich bin die Methode von juhu");
+    }
+}
+
+public class Top{
+    public static void main(String[] args){
+        System.out.println("ich bin die Hauptmethode");
+    }
+}
+_____________________________________________________________________________
+Das Programm davor führt nur die Hauptmethode aus, weil
+- es gibt zwar Klasse 'Juhu'
+- es wurde jedoch kein Objekt davon erzeugt
+- Objekte werden (analog zu Arrays) durch 'new' erzeugt:
+    Ausdruck -> new Klassenname()
+- Print-Anweisung zum Objekt gibt nur die Adresse davom im Speicher aus (analog zu Arrays)
+
+class Juhu{
+    public static void doit(){
+        System.out.println("ich bin die Methode von juhu");
+    }
+}
+public class Top2{
+    public static void main(String[] args){
+        System.out.println(new Juhu());
+    }
+}
+_____________________________________________________________________________
+Objekte können in Variablen gespeichert werden
+- dazu gilt Klassenname als Typ
+- Solche Variablen erhalten noch kein Objekt (analog zu Arrays)
+- dies muss durch 'new' erschaffen werden
+class Juhu{
+    public static void doit(){
+        System.out.println("ich bin die Methode von juhu");
+    }
+}
+public class Top3 {
+    public static void main(String[] args){
+        Juhu i = null; // Objekt-Variable i vom Typ 'Juhu' wird deklariert
+        System.out.println(i);
+        i = new Juhu(); // Objekt wird erzeugt
+        System.out.println(i);
+    }
+}
+_____________________________________________________________________________
+Objekt der Klasse 'Juhu' wurde zwar erzeugt, jedoch ...
+- Methode 'doit' wird noch nicht abgearbeitet
+- Um Objektmethode aufzurufen, muss dem Objekt ein Punkt folgen, dann Methodenname:
+    Objekt.Methodenname(Ausdrücke);
+
+class Juhu{
+    public static void doit(){
+        System.out.println("ich bin die Methode von juhu");
+    }
+}
+public class Top4{
+    public static void main(String[] args){
+        Juhu i = null;
+        System.out.println(i);
+        i = new Juhu();
+        System.out.println(i);
+        i.doit(); // 'doit' Methode vom Objekt i wird aufgerufen
+        (new Juhu()).doit(); // 'doit' Methode eines neuen, anonymen Objekts wird aufgerufen
+    }
+}
+_________________________________________________________________________________
+Top-Programme:
+- Bisher keine Daten mit Objekten assoziiert.
+Damit Objekt Daten speichern kann:
+- In der Klasse muss Objekt-Variable deklariert werden
+Objekt-Variablen:
+- gehören nicht einer Methode, die damit wieder verschwinden, sondern:
+    -> Es entstehen zusammen mit dem Objekt
+    -> Behalten ihren Wert während der gesamten Objektlebenszeit
+    -> Verschwinden mit dem Sterben des Objekts
+    -> Verschiedene Objekte einer Klasse haben ihre eigenen Objekt-Variablen
+_____________________________________________________________________________
+Eine Klasse:
+- Kann neben Methoden auch Deklarationen von Variablen haben
+Beispiel:
+das nebenstehende Programm erzeugt den folgenden Fehler:
+
+Top5.java:3: non-static variable i cannot be referenced from a static context
+    System.out.println(++i);
+Grund:
+static vod 'doit' zeigt an, dass 'doit' keine Objektmethode ist
+
+class Juhu{
+    public static void doit(){
+        System.out.println(++i);
+    }
+    int i;
+}
+public class Top5{
+    public static void main(String[] args){
+        Juhu i = new Juhu();
+        Juhu k = new Juhu();
+        i.doit();
+        i.doit();
+        k.doit();
+    }
+}
+_____________________________________________________________________________
+Um in Methode 'doit' auf Objektvariable i zugreifen zu können,
+muss es ein Objekt geben:
+    - Schlüsselwort static besagt, dass die Methode auch ohne Objekt aufgerufen werden kann
+    - Welches i soll aber gelesen werden, wenn es kein Objekt gibt?
+    - Es gibt keine vernünftige Antwort darauf, - deshalb: Compilerfehler
+Schlüsselwort static weglassen, so kann Methode 'doit' nur durch Objekt aufgerufen werden:
+    public void doit(){
+        System.out.println(++i);
+    }
+_____________________________________________________________________________
+Methoden können mit static oder ohne definiert werden:
+Mit static - Klassenmethoden:
+- Auch ohne Objekt aufrufbar
+- Können nicht auf Objektvariablen zugreifen
+Ohne static - Objektmethoden:
+- Nur mit Objekt aufrufbar
+- Können auf Objektvariablen zugreifen
+_____________________________________________________________________________
+class Juhu{
+    public void doit(){ // Objektmethode: gehört zum Objekt, kann auf Objekt-Variable i zugreifen
+        System.out.println(++j);
+    }
+    int j; // Objekt-Variable: Gehört zum Objekt, nicht zu irgendeiner Methode
+}
+public class Top2{
+    public static void main(String[] args){
+        Juhu i = new Juhu(); // *
+        Juhu k = new Juhu(); // *  2 Objekte werden angelegt
+        i.doit(); // *
+        i.doit(); // * ruft 2-mal 'doit' von Objekt i auf
+        k.doit(); // ruft 1-mal 'doit' von Objekt k auf
+    }
+}
+Ergebnis:
+j von i ist: 1
+j von i ist: 2
+j von k ist: 1
+_____________________________________________________________________________
+                    Zugriff auf Objektvariablen
+Möchte man auf Objektvariabeln zugreifen (lesend oder schreiben), so gibt es zwei Situationen:
+
+- Man befindet sich in einer Methode eines Objekts, und möchte,
+  auf eigene Objekt-Variablen zugreifen:
+  -> Das tut man durch Verwendung der Variablen-Namen:
+
+  class A{
+    int m_i;
+    public void doit(){
+        m_i = 42;           // Greift auf sein eigenes m_i zu
+    }
+  }
+
+- Man hat ein Objekt gegeben und möchte auf dessen Objektvariabelen zugreifen, d.h.
+  auf Variablen eines anderen Objekts zugreifen
+  -> Das tut man, indem das Objekt mit einem Punkt "." vorangestellt wird (analog zum Methodenaufruf):
+
+  class B{
+    public void doit(){
+        A juhu = new A();
+        juhu.m_i = 42;      // Greift auf m_i vom Objekt juhu zu
+    }
+  }
+_____________________________________________________________________________
+class A{
+    public doit(){
+        System.out.println(m_j++);  // 'doit()' greift auf die eigene Objektvariable m_j zu
+    }
+    int m_j;
+}
+public class ObjVar{
+    public static void main(String[] arg){
+        A juhu = new A();
+        juhu.doit();
+        juhu.m_j = 13;
+        juhu.doit();
+        juhu.doit();
+        System.out.println(juhu.m_j);
+    }
+}
+Ergebnis:
+13
+14
+15
+_____________________________________________________________________________
+                    Objekterzeugung
+folgende Situation:
+- eine Klasse hat ein int-Array als Objektvariable
+- eine Methode initialsiert diese Objektvariable
+eine andere Methode greift auf dieses int-Array zu
+
+class A{
+    int[] m_arField; // das Array ist bei der Objekterzeugung noch nicht angelegt
+    public void init(){ // dies wird von der init-Methode erledigt
+        m_arField = new int[10];
+    }
+    public int get(int i){
+        return m_arField[i];
+    }
+}
+
+public class B {
+    public static void main(String[] args){
+        A a = new A(); // Objekt der Klasse A wird erzeugt
+        a.init(); // die init-Methode des Objekts wird ausgeführt
+        System.out.println(a.get(5)); // das Ergebnis der get-Methode des Objekts wird ausgegeben
+    }
+}
+_____________________________________________________________________________
+                Objekterzeugung (Fort.)
+Problem:
+- wenn die init-Methode nicht aufgerufen wird:
+  get-Methode erzeugt einen Fehler (NullPointerException)
+- Nach jeder Erzeugung eines A Objekte, erst die init-Methode aufrufen,
+  bevor eine andere Methode aufgerufen wird
+- Objekterzeugung und anschließende init-Methode bilden eine Einheit:
+  diese Einheit wird in OOP durch Konstruktoren realsiert
+- Konstruktoren enthalten Code, der unmittelbar nach Erzeugung eines Objekte ausgeführt wird
+_____________________________________________________________________________
+                Konstruktoren
+public Methodenname(Parameters){
+    Anweisung
+};
+- Konstruktorne werden wie Methoden gebildet
+- sie dürfen nicht static sein
+- sie haben weder einen Ergebnistypen noch sind sie vom Typ void
+- Name des Konstruktors muss identisch zum Klassenname sein
+
+class A{
+    int[] m_arField;
+    public A(){ // dies ist der Konstruktor: kein static, kein void, kein Typ
+        m_arField = new int[10];
+    }
+    public int get(int i){
+        return m_arField[i];
+    }
+}
+
+public class B {
+   public static void main(String[] args){
+       A a = new A(); // bei der Erzeugung von A wird der Konstruktor ausgeführt
+       // es muss kein init mehr aufgerufen werden; gibt es auch nicht mehr
+       System.out.println(a.get(5));
+   }
+}
+_____________________________________________________________________________
+                Konstruktoren (Fort.)
+Vorteile von Konstruktoren:
+- Initialisierung des Objekts kann nicht mehr vergessen werden,
+  ist mit Objekterzeugung verbunden
+- Kein Zeitpunkt, an dem das Objekt inkonsistent ist (einen illegalen Zustand hat)
+- Verantwortung eines korrekten Objekts liegt nicht mehr beim Erzeuger, sondern beim Objekt selbst
+_____________________________________________________________________________
+                Konstruktoren (Fort.)
+- Konstruktoren können Parameter bei Erzeugung des Objekts bekommen
+- Die Parameter können während Initialisierung ausgewertet werden
+class A{
+  int[] m_arField;
+  public A(int iSize){ // Konstruktor hat einen Parameter iSize
+      m_arField = new int[iSize];
+  }
+  public int get(int i){
+      return m_arField[i];
+  }
+}
+
+public class Vorlesung {
+    public static void main(String[] args){
+        A a = new A(10); // aktueller Parameter wird bei Objekterzeugung angegeben
+        System.out.println(a.get(5));
+    }
+}
+_____________________________________________________________________________
+                Beispiel für Konstruktoren
+class A{
+   public A(int iDepth){
+      System.out.println("cool, it's a " + iDepth); // Klasse A mit Konstruktor
+   }
+}
+class B{ // Klasse B mit Konstruktor und Methode
+   public B(){
+      System.out.println("ich bin der Konstruktorvon B");
+   }
+   public void doit(){
+      System.out.println("ich bin doit von B");
+   }
+}
+public class Konstruktor {
+   public static void main(String[] args){
+      A a1 = new A(5); // 3 A Objekte und 1 B Objekt werden erzeugt
+      A a2 = new A(20);
+      new B().doit();
+      new A(17);
+   }
+}
+_____________________________________________________________________________
+Vorlesung 10/2 - Diskussion
+- Durch Verwendung vin Klassen - Programm ist kürzer
+- Aber Programm übersichtlicher,
+- Viele Methoden, aber jeweils sehr kurz
+- Klasse Game muss sich nicht drum kümmern, wie ein Turm seine Steine verwaltet
+- Klasse Tower bekommt von Game nur die Nachricht, ein Stein soll entfernt oder abgelegt werden
+- wies dies im Einzelnen erfolgen soll, interessiert Klasse Game nicht
+- Klasse Game muss jedoch wissen, dass ein einfacher Turm keine Steine hat
+- Daher im Konstruktor vom 1. Turm die init-Methode aufrufen
+public Game(int iDepth) {
+    m_iDepth = iDepth;
+    m_arTowers[0] = new Tower(m_iDepth);
+    m_arTowers[1] = new Tower(m_iDepth);
+    m_arTowers[2] = new Tower(m_iDepth);
+    m_arTowers[0].init();
+}
+- Schön wär's: Bei Konstruktion mitteilen, ob Steine auf ihn abzulegen sind oder nicht
+
+mögliche Lösung:
+- Konstruktor von Tower einen Flag geben für: ob init-Methode aufrufen oder nicht
+public Tower(int iDepth, boolean bInt){
+    m_arStones = new int[iDepth];
+    m_iTop = iDepth-1;
+    if(bInit)
+        init(); // ruft seine eigene init-Methode auf
+}
+public Game(int iDepth){
+    m_iDepth = iDepth;
+    m_arTowers[0] = new Tower(m_iDepth, true);
+    m_arTowers[1] = new Tower(m_iDepth, false);
+    m_arTowers[2] = new Tower(m_iDepth, false);
+}
+
+andere Lösung:
+- eine neue Klasse TowerWithStones definieren
+- kann alles vom Tower, zusätzlich bei Konstrution werden Steine auf dem Turm gelegt
+
+class Tower{
+    ...
+}
+class TowerWithStones{
+    ... kopiere alles aus Tower
+    public TowerWithStones(int iDepth){
+        ...
+    } // Zusätzliche Initialisierung
+}
+
+Problem:
+- viel Schreibaufwand
+- fehleranfällig:
+    - Änderungen von Tower werden auch in TowerWithStones nachgeführt & umgekehrt
+- funktioniert nicht, weil ...
+
+class Game {
+    public Game(int iDepth) {
+        m_iDepth = iDepth;
+        m_arTowers[0] = new TowerWithStones(m_iDepth); // Typfehler: in m_arTowers können nur Objekte von Tower aber nicht von TowerWithStone abgespeichert werden
+        m_arTowers[1] = new Tower(m_iDepth);
+        m_arTowers[2] = new Tower(m_iDepth);
+    }
+    ...
+    Tower[] m_arTowers = new Tower[3];
+}
+Lösung: Vererbung
+_____________________________________________________________________________
+                Vererbung
+- Häufiges Auftreten in der Natur:
+    Beziehungen gemäß einer Generalisierung bzw. Spezialisierung
+- Spezialisierung:
+    Wenn Klassen von einer Klasse (oder mehreren Klassen) alle Eigenschaften erben
+    und denen u.U. noch weitere Eigenschaften hinzufügen
+- Beispiel:
+    Laubbaum ist eine Spezialisierung von einer allgemeineren Klasse Baum.
+    Baum ist eine Spezialisierung der noch allgemeineren Klasse Pflanze.
+- Generalisierung findet in umgekehrter Richtung statt.
+_____________________________________________________________________________
+                Vererbung (Fort.)
+- Solche Beziehungen werden in der Informatik durch Bäume dargestellt.
+    Diese wachsen von oben nach unten.
+- Nach unten wird's immer spezieller:
+    Transportmittel -> [Schiff, Züge, Straßenfahrzeug]
+    Straßenfahrzeug -> [Lastwagen, Auto, Zweirad]
+    Zweirad         -> [Motorrad, Fahrrad]
+- Fahrrad erbt die Eigenschaften von Zweirad
+- Zweirad erbt die Eigenschaften von Straßenfahrzeug
+- Straßenfahrzeug erbt die Eigenschaften von Transportmittel
+=> Fahrrad ist Zweirad, ist Straßenfahrzeug, ist Transportmittel
+_____________________________________________________________________________
+                Vererbung (Fort.)
+Werden die Kästchen durch Klassen modelliert, so soll Vererbung ebenfalls in Java ausgedrückt werden
+In Java kann eine Klasse immer von maximal einer Klasse erben
+
+class Transportmittel{
+    ...
+}
+class Straßenfahrzeug extends Transportmittel{
+    ...
+}
+class Zweirad extends Straßenfahrzeug{
+    ...
+}
+_____________________________________________________________________________
+                Vererbung (Fort.)
+Begriff: class B extends A{ ... }
+- Klasse B wird von A abgeleitet
+- A ist Basisklasse von B
+- B erbt alle Objektmethoden und Objekt-Variablen von A
+
+class A{
+   public void doit() {System.out.println(m_j++);}
+   int m_j;
+}
+class B extends A{} // B wird von A abgeleitet, fügt A aber nichts hinzu
+public class Vorlesung {
+   public static void main(String[] args){
+      B juhu = new B(); // von einem B Objekt wird 2-mal die doit-Methode aufgerufen
+      juhu.doit();
+      juhu.doit();
+   }
+}
+Ergebnis:
+0
+1
+_____________________________________________________________________________
+                Vererbung (Fort.)
+class A{
+   public void doit(){
+      System.out.println(m_j++);
+   }
+   int m_j;
+}
+class B extends A{
+   public void makeMyDay(){ // Welches m_j ist das unten?
+      System.out.println(m_j); // B wird von A abgeleitet, und fügt eine Methode hinzu
+   }
+}
+
+public class Vorlesung{
+   public static void main(String[] args){
+      B juhu = new B();
+      juhu.makeMyDay();
+      juhu.doit();
+      // von einem B Objekt werden beide Methoden aufgerufen
+   }
+}
+Ergebnis:
+0
+0
+_____________________________________________________________________________
+                Vererbung (Fort.)
+Was passiert bei Konstruktion eines Objekts einer abgeleiteten Klasse?
+1. Es wird Platz für Objekt auf Heap geschaffen
+    (Platz reicht für Objektvariable der abgeleiteten Klasse UND Basisklasse)
+2. Es wird Konstruktor der Basisklasse ausgeführt
+3. Es wird Konsturktor der abgeleiteten Klasse ausgeführt
+
+class A{
+   public A(){ // Basisklasse hat einen Konstruktor
+      System.out.println("A+");
+   }
+}
+class B extends A{
+   public B(){ // Abgeleitete Klasse hat auch einen Konstruktor
+      System.out.println("B+");
+   }
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      new B(); // 1 B Objekt wird erzeugt
+   }
+}
+Ergebnis:
+A+
+B+
+_____________________________________________________________________________
+                Vererbung (Fort.)
+class A{
+   public A(){System.out.println("A+");}
+}
+class B extends A{
+   // B hat keine Konstruktor
+}
+class C extends B{
+   public C(){System.out.println("C+");}
+}
+class D extends C{
+   // D hat keine Konstruktor
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      new D();
+   }
+}
+Ergebnis:
+A+
+C+
+_____________________________________________________________________________
+                Vererbung (Fort.)
+Frage:
+- Wie den Konstruktor einer Basisklasse ausführen, wenn er einen oder mehrere Parameter erwartet?
+Antwort:
+- gar nicht! Parameter muss angegeben werden
+
+Um Konstruktor einer Basisklasse Parameter zu geben, wird Konstruktor explizit aufgerufen (wie eine Methdode)
+- dies erfolgt durch Schlüsselwort: super
+- da Konstruktor der Basisklasse vor eigenem Konstruktor ausgeführt wird, muss super der erste Befehl sein
+
+class A{
+   public A(int i){ // Basisklasse A hat einen Konstruktor mit Parametern
+      System.out.println(i);
+      m_i = 2*i;
+   }
+   int m_i;
+}
+class B extends A{
+   public B(int j){
+      super(j); // Konstruktor der abgeleiteten Klasse ruft Basiskonstruktor direkt auf
+      System.out.println(m_i);
+   }
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      new B(13); // 1 B Objekt wird erzeugt
+   }
+}
+_____________________________________________________________________________
+                Vererbung (Fort.)
+Wie hängen die Typen von Basisklasse und abgeleiteter Klasse zusammen?
+    class B extends A { ... }
+- Objekte der Klasse B "enthalten" auch als Teil ein Objekt der Klasse A
+- damit ist B auch vom Typ A
+- aber: ein Objekt der Klasse A ist nicht auch vom Typ B
+class A{
+   public A(){
+      m_i = 13;
+   }
+   public void doit(){
+      System.out.println(++m_i);
+   }
+   int m_i;
+}
+class B extends A{
+   public void makeMyDay(){
+      System.out.println(m_i);
+   }
+}
+class Vorlesung{
+   public static void main(String[] args){
+      B b = new B(); // 2 B Objekte werden erzeugt
+      A a1 = new B();
+      A a2 = b; // kein Typ-konflikt, kein Casting, B ist auch vom Typ A
+      b.makeMyDay();
+      a1.doit();
+      a2.doit(); // von a1, a2 kann nicht die makeMyDay Methode aufgerufen werden
+   }
+}
+_____________________________________________________________________________
+                Vererbung (Fort.)
+- zurück zu Türmen von Hanoi
+- mittels Vererbung kann eine spezielle Klasse TowerWithStones von Klasse Tower abgeleitet werden
+- die Klasse führt im Konstruktor die Initialisierung mit Steinen durch
+- die Klasse Game erzeugt für 1. Turm ein Objekt der Klasse TowerWithStones
+    und für 2. und 3. Turm Objekte der Klasse Tower
+_____________________________________________________________________________
+                Die Klasse Object
+- jede Klasse erbt von einer anderen Klasse, entweder
+    - explizit durch das Schlüsselwort extends, oder
+    - implizit von der Klasse Object
+class Object{
+    boolean equals(Object obj);
+    protected Object clone();
+    String toString(); // wird von println() aufgerufen
+    int hashCode();
+}
+- dadurch sind alle Objekte vom Typ Object
+_____________________________________________________________________________
+                Die Klasse Object (Fort.)
+class A extends Object{
+}
+class B{
+}
+- Mit extends Object oder ohne: Alle Klassen sind am Ende von Object abgeleitet
+public class AllObject{
+    public static void main(String[] args){
+        Object o = new A();
+        System.out.println(o);
+        o = new B();
+        System.out.println(o);
+        // Sowohl A als auch B sind beide auch vom Typ Object
+    }
+}
+_____________________________________________________________________________
+                Die Klasse Object (Fort.)
+- Vorteil: Alle Klassen sind direkt oder indirekt von Onject abgeleitet
+- Alle Objekte können in Variablen vom Typ Object gespeichert werden
+
+public class PrettyPrint{
+    static void print(Object o){ // Jedes Object kann print übergeben werden
+        System.out.print(">>>>>");
+        System.out.print(o);
+        System.out.println("<<<<<<");
+    }
+    public static void main(String[] args){
+        Object o = new A();
+        print(o);
+        print(new A());
+        print(new B());
+        print(new String("juhu"));
+    }
+}
+_____________________________________________________________________________
+                Die Wrapperklassen
+Problem der vorherigen print Methode:
+- Nur Objekte können übergeben werden
+- Werte oder Variablen der Basistypen sollten nicht verarbeitet werden können
+// funktioniert nicht mit java Version < 1.5
+public class PrettyPrint2{
+    static void print(Object o){
+        System.out.print(">>>>>");
+        System.out.print(o);
+        System.out.println("<<<<<");
+    }
+    public static void main(String[] args){
+        print(3); // 3 ist int, kein Object
+        print(true);  // true ist boolean, kein Object
+        print('j'); // 'j' ist char, kein Object
+    }
+}
+_____________________________________________________________________________
+                Die Wrapperklassen (Fort.)
+- Für alle Basistypen gibt es entsprechende Wrapperklassen
+- diese merken sich nur einen Wert des entsprechenden Basistyps
+- für int - Klasse Integer
+- für char - Klasse Character
+- für boolean - Klasse Boolean
+
+// funktioniert jetzt auch mit Java Version < 1.5
+public class PrettyPrint3{
+    public static void main(String[] args){
+        print(new Integer(3)); // *
+        print(new Boolean(true)); // *
+        print(new Character('j')); // Wrapperklassen sind auch vom Typ Object
+    }
+}
+_____________________________________________________________________________
+                Auto(un)boxing
+- Verwendung der Wrapperklassen ist oft umständlich
+    Daher ab Version 1.5 -> gibt es Autoboxing/Autounboxing
+- Autoboxing:
+  Es wird ein Objekt erwartet, aber ein Wert eines Basistypes angegeben,
+  wird automatisch die Wrapperklasse verwendet
+- Autounboxing:
+  wird Basistyp erwartet, aber es wird ein Objekt der Wrapperklasse verwendet,
+  wird automatisch der Wert aus dem Wrapperobjekt gezogen
+
+pulic static void main(String[] args){
+    Integer i = new Integer(3);
+    int j = i; // Autoboxing: Integer -> int
+    print(j); // Autoboxing: int -> Integer
+}
+_____________________________________________________________________________
+                Strings
+- Klasse zur Darstellung und Ver-/Bearbeitung von Zeichenfolgen
+- Erzeugung:    String s = new String("Juhu") oder
+                String s = "Juhu"
+- Methode zur Längenermittlung: s.length()
+- Zugriff: s.charAt(3)
+- WICHTIG: Strings ändern niemals ihren Wert (sprich Zeichen)
+- kleiner Auszug aus der Methodenvielfalt:
+    public String substring(int begin, int end);
+    public int compareTo(String s); /* Vergleich */
+    public int indexOf(String s); /* s kann auch vom Typ char sein */
+    public int indexOf(String s, int fromIndex); /* dito */
+    public int lastIndexOf(String s); /* dito */
+- Konkatenation: s + "toll" + "hello" + s
+_____________________________________________________________________________
+                Vergleich von Strings (Fort.)
+- die Methode compareTo führt einen lexikalischen Vergleich zwischen 2 Strings durch
+- der Rückgabewert wird unterschieden zwischen
+    - negativer Wert => aktueller String ist kleiner als übergebenen String
+    - positiver Wert => aktueller String ist größer als übergegebenen String
+    - 0              => die beiden Strings sind gleich
+_____________________________________________________________________________
+                Vergleich von Strings (Fort.)
+public class Vorlesung{
+   public static void main(String[] args){
+      String s1 = new String("Mayer");
+      String s2 = new String("Maier");
+      String s3 = new String("Anton der Erste");
+      String s4 = new String("Schmidt");
+      if(s3.startsWith("Ant"))
+         System.out.println("In Anton steckt eine Ameise");
+      if(s3.endsWith("e"))
+         System.out.println("die mit 'e' aufhört");
+      System.out.println(s1.compareTo(s2));
+      System.out.println(s1.compareTo(s3));
+      System.out.println(s1.compareTo(s4));
+      System.out.println(s1.compareTo(s1));
+   }
+}
+Ergebnis:
+In Anton steckt eine Ameise
+die mit 'e' aufhört
+16
+12
+-6
+0
+_____________________________________________________________________________
+                Vergleich von Strings (Fort.)
+public class Vorlesung{
+   public static void main(String[] args){
+      String s = new String("Anton der Erste, der Puritaner");
+      System.out.println(s.indexOf("der")); // sucht den Teilstring "der" von Anfang ... // Ergebnis: 6
+      System.out.println(s.indexOf("der",12)); // ... bzw. ab der Position 12 // Ergebnis: 17
+      System.out.println(s.indexOf("der",s.lastIndexOf("der") + 1)); // kann ja nicht funktionieren
+      System.out.println(s.substring(s.lastIndexOf('d'),s.length()));
+   }
+}
+Ergebnis:
+6
+17
+-1
+der Puritaner
+_____________________________________________________________________________
+                Die Klasse StringBuffer
+- Objekte der String Klasse könne nicht verändert werden
+- einmal erzeugt ist ihr Wert konstant
+- sollen Strings während ihrer Lebensdauert verändert werden,
+  muss die Klasse StringBuffer (bzw. StringBuilder: nicht threadsicher) verwendet werden
+public class StringBuffer{
+    public StringBuffer(); // *
+    public StringBuffer(String s); // * Konstruktoren
+    public StringBuffer append(String s); // *
+    public StringBuffer insert(int offset, String s); // *
+    public StringBuffer deleteCharAt(int index); // *
+    public StringBuffer delete(int start, int end); // *
+    public StringBuffer replace(int start, int end, String str); // * verändern alle das Objekt und liefern das veränderte Objekt zurück
+    public void setCharAt(int index, char c)
+        throws StringIndexOutofBoundsException;
+    public int length();
+    ...
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      StringBuffer s1 = new StringBuffer("Hello World");
+      System.out.println(s1);
+      s1.append(":juhu"); // anhängen
+      System.out.println(s1);
+      s1.insert(5," old"); // einfügen
+      System.out.println(s1);
+      s1.deleteCharAt(8); // einzelnen Zeichen löschen
+      System.out.println(s1);
+      s1.delete(6,9); // Bereich löschen -> Alles zwischen 6 und 9 wird gelöscht
+   }
+}
+_____________________________________________________________________________
+                Vorlesung 11/1 - Hochschulverwaltung
+- Neben Türmen von Hanoi, soll die Anwendung von Klassen durch Hochschulverwaltung erneut gezeigt werden
+- Verwaltet werden sollen Studenten und Mitarbeiter
+- Beide Gruppen haben jeweils Vorname und Nachname
+- Unterschied zwischen den Beiden:
+    - Studenten haben Matrikelnummer,
+    - Mitarbeiter haben Personalnummer
+- Weiterhin muss verwaltet werden:
+    - Welches Fach belegt ein Student
+    - Welches Gehalt bekommt ein Mitarbeiter
+- Aufgaben der Verwaltung:
+    - Anlegen neuer Studis
+    - Anlegen neuer Mitarb.
+    - Alle Studis und Mitarb, ausdrucken
+    - Alle Studis ausdrucken
+    - Alle Mitarb. ausdrucken
+_____________________________________________________________________________
+                Hochschulverwaltung - Die Basisklasse
+class Person{
+    Person(String vorname, String nachname, boolean istMitarbeiter, boolean istStudent){ // Im Konstruktor werden alle Objekt-Variablen initialisiert
+        m_Vorname = vorname;
+        m_Nachname = nachname;
+        m_IstMitarbeiter = istMitarbeiter;
+        m_IstStudent = istStudent;
+    }
+    void print(){ // Ausgabe auf der Konsole
+        System.out.print(m_Vorname + " " + m_Nachname);
+    }
+    boolean istMitarbeiter(){
+        return m_IstMitarbeiter;
+    }
+    boolean istStudent(){
+        return m_IstStudent;
+    }
+    String m_Vorname; // *
+    String m_Nachname; // * jede Person hat einen Vor- und Nachnamen
+    boolean m_IstMitarbeiter; //*
+    boolean m_IstStudent; // * ein boolescher Wert hätte gereicht, um Studenten und Mitarbeiter zu unterscheiden
+}
+class Mitarbeiter extends Person{ // Mitarbeiter erweitern Personen
+    Mitarbeiter(String vorname, String nachname, int personalNr, int gehalt){
+        super(vorname, nachname, true, false); // Mitarbeiter, kein Student
+        m_PersonalNr = personalNr; // *
+        m_Gehalt = gehalt; // * Initialisierung der zusätzlichen Objekt-Variablen
+    }
+    void printMitarbeiter(){ // Ausgabe von Mitarbeiter
+        System.out.print(m_PersonalNr + ": ");
+        print();
+        System.out.println("; Gehalt: " + m_Gehalt);
+    }
+    int m_Gehalt; // *
+    int m_PersonalNr; // * Informationen, die Mitarbeiter, aber nicht Studenten haben
+}
+class Student extends Person{
+    enum Studiengang {INF, WINF, DIM, TWL}; // Studienfach als Enumerationstyp
+    Student(String vorname, String nachname, int martikelNr, Studiengang fach){
+        super(vorname, nachname, false, true); // Student, kein Mitarbeiter
+        m_MatrikelNr = martikelNr; // *
+        m_Fach = fach; // * Initialisierung der zusätzlichen Objekt-Variablen
+    }
+    void printStudent(){
+        System.out.print(m_MatrikelNr + ": ");
+        print();
+        System.out.println("; Studiengang: " + m_Fach);
+    }
+    int m_MatrikelNr; // *
+    Studiengang m_Fach; // * Informationen, die Studenten, aber nicht Mitarbeiter haben
+}
+class Verwaltung{
+    Person[] m_Personen = new Person[2000]; // Die Verwaltung kann sich maximal 2000 Personen merken
+    int m_NaechstePersonalNr = 1; // die nächste Personalnummer für Mitarbeiter
+    int m_NaechsteMatrikelNr = 1; // die nächste Matrikelnummer für Studenten
+    int m_NaechsterEintrag = 0; // der nächste freie Eintrag im Array
+    void neuerStudent(String vorname, String nachname, Student.Studiengang fach){ // ein neuer Student
+        m_Personen[m_NaechsterEintrag] = new Student(vorname, nachname, m_NaechsteMatrikelNr, fach);
+        ++m_NaechsteMatrikelNr;
+        ++m_NaechsterEintrag;
+    }
+    void neuerMitarbeiter(String vorname, String nachname, int gehalt){ // ein neuer Mitarbeiter
+        m_Personen[m_NaechsterEintrag] = new Mitarbeiter(vorname, nachname, m_NaechstePersonalNr, gehalt);
+        ++m_NaechstePersonalNr;
+        ++m_NaechsterEintrag;
+    }
+    void print(){
+        for(int i = 0; i < m_NaechsterEintrag; ++i){
+            m_Personen[i].print(); // druckt alle Personen auf der Konsole aus
+            System.out.println();
+        }
+    }
+    void printStudenten() {
+        for(int i = 0;i < m_NaechsterEintrag;++i)
+            if (m_Personen[i].istStudent())
+                ((Student)m_Personen[i]).printStudent(); // Typecast, um printStudent() aufrufen zu können ...
+    }
+    void printMitarbeiter() {
+        for(int i = 0;i < m_NaechsterEintrag;++i)
+            if (m_Personen[i].istMitarbeiter())
+                ((Mitarbeiter)m_Personen[i]).printMitarbeiter(); // ... bzw. Mitarbeiter()
+    }
+    // Typecast ist extrem hässlich und NICHT objektorientiert
+}
+
+public class U11_01_Hochschulverwaltung {
+    public static void main(String[] args){
+        Verwaltung v = new Verwaltung();
+        v.neuerMitarbeiter("Horst","Schlemmer",35000);
+        v.neuerMitarbeiter("Anna","Müller", 42000);
+        v.neuerStudent("Lieschen","Müller",Student.Studiengang.INF);
+        v.neuerMitarbeiter("Arnold","Schwarzenegger",142000);
+        v.neuerStudent("Heinz","Ketchup",Student.Studiengang.TWL);
+        System.out.println("alle Personen: ");
+        v.print(); // druckt alle Personen
+        System.out.println("\nalle Mitarbeiter: "); // druckt alle Mitarbeiter
+        v.printMitarbeiter();
+        System.out.println("\nalle Studenten: "); // druckt alle Studenten
+        v.printStudenten(); // druckt alle Studenten
+    }
+}
+_____________________________________________________________________________
+                    Hochschulverwaltung imperativ
+public class U11_01_Hochschulverwaltung_imp {
+    enum Studiengang {INF, WINF, DIM, TWL}
+
+    ; // die Studiengänge werden wieder als Enumerationstyp deklariert
+
+    public static void main(String[] args) {
+        final int MAX = 2000;
+        String[] vornamen = new String[MAX];
+        String[] nachnamen = new String[MAX];
+        boolean[] istStudenten = new boolean[MAX];
+        boolean[] istMitarbeiter = new boolean[MAX];
+        int[] matrikelNr = new int[MAX];
+        int[] personalNr = new int[MAX];
+        int[] gehaelter = new int[MAX];
+        Studiengang[] faecher = new Studiengang[MAX];
+        // statt 1 Array mit Studenten/Mitarbeiter Objekten, jetzt 8 Arrays mit elementaren Daten
+        int naechstePersonalNr = 1;
+        int naechsteMatrikelNr = 1;
+        int naechsterEintrag = 0;
+        // gleiche Informationen wie zuvor in der Verwaltungsklasse
+
+        neuerMitarbeiter("Horst", "Schlemmer", 25000, vornamen, nachnamen, istMitarbeiter, personalNr, gehaelter, naechsterEintrag, naechstePersonalNr);
+        ++naechsterEintrag;
+        ++naechstePersonalNr;
+        neuerMitarbeiter("Anna", "Müller", 42000, vornamen, nachnamen, istMitarbeiter, personalNr, gehaelter, naechsterEintrag, naechstePersonalNr);
+        ++naechsterEintrag;
+        ++naechstePersonalNr;
+        neuerStudent("Lieschen", "Müller", Studiengang.INF, vornamen, nachnamen, istStudenten, matrikelNr, faecher, naechsterEintrag, naechsteMatrikelNr);
+        ++naechsterEintrag;
+        ++naechsteMatrikelNr;
+        neuerMitarbeiter("Arnold", "Schwarzenegger", 142000, vornamen, nachnamen, istMitarbeiter, personalNr, gehaelter, naechsterEintrag, naechstePersonalNr);
+        ++naechsterEintrag;
+        ++naechstePersonalNr;
+        neuerStudent("Heinz", "Ketchup", Studiengang.TWL, vornamen, nachnamen, istStudenten, matrikelNr, faecher, naechsterEintrag, naechsteMatrikelNr);
+        ++naechsterEintrag;
+        ++naechsteMatrikelNr;
+        System.out.println("alle Personen:"); // jetzt noch alle Personen ausdrucken
+        print(vornamen, nachnamen, naechsterEintrag);
+        System.out.println("\nalle Mitarbeiter:");
+        printMitarbeiter(vornamen, nachnamen, istMitarbeiter, personalNr, gehaelter, naechsterEintrag); // nur die Mitarbeiter
+        System.out.println("\nalle Studenten:");
+        printStudenten(vornamen, nachnamen, istStudenten, matrikelNr, faecher, naechsterEintrag); // nur die Studenten
+    }
+
+    static void neuerStudent(String vorname, String nachname, Studiengang fach, String[] vornamen, String[] nachnamen, boolean[] istStudenten, int[] matrikelNr, Studiengang[] faecher, int naechsterEintrag, int naechsteMatrikelNr) { // alle betroffenen Arrays müssen übergeben werden
+        vornamen[naechsterEintrag] = vorname;
+        nachnamen[naechsterEintrag] = nachname;
+        istStudenten[naechsterEintrag] = true;
+        matrikelNr[naechsterEintrag] = naechsteMatrikelNr;
+        faecher[naechsterEintrag] = fach; // hier wäre ++naechsterEintrag und ++naechsteMatrikelNr schön, aber Java hat kein call-by-reference
+    }
+    static void neuerMitarbeiter(String vorname, String nachname, int gehalt, String[] vornamen, String[] nachnamen, boolean[] istMitarbeiter, int[] personalNr, int[] gehaelter, int naechsterEintrag, int naechstePersonalNr) {
+        vornamen[naechsterEintrag] = vorname;
+        nachnamen[naechsterEintrag] = nachname;
+        istMitarbeiter[naechsterEintrag] = true;
+        personalNr[naechsterEintrag] = naechstePersonalNr;
+        gehaelter[naechsterEintrag] = gehalt;
+    }
+    static void print(String[] vornamen, String[] nachnamen, int naechsterEintrag){
+        for(int i = 0; i < naechsterEintrag; ++i)
+            System.out.println(vornamen[i] + " " + nachnamen[i]);
+    }
+    static void printStudenten(String[] vornamen, String[] nachnamen, boolean[] isStudenten, int[] matrikelNr, Studiengang[] faecher, int naechsterEintrag){
+        for(int i = 0; i < naechsterEintrag; ++i)
+            if(isStudenten[i])
+                System.out.println(matrikelNr[i] + ": " + vornamen[i] + " " + nachnamen[i] + "; Studiengang: " + faecher[i]);
+    }
+    static void printMitarbeiter(String[] vornamen, String[] nachnamen, boolean[] istMitarbeiter, int[] personalNr, int[] gehaelter, int naechsterEintrag){
+        for(int i = 0; i < naechsterEintrag; ++i)
+            if(istMitarbeiter[i])
+                System.out.println(personalNr[i] + ": " + vornamen[i] + " " + nachnamen[i] + "; Gehalt: " + gehaelter[i]);
+    }
+}
+_____________________________________________________________________________
+                Hochschulverwaltung imperativ: Kritik
+- Genau wie bei Hanoi: Das imperative Programm ist kürzer als das objektorientierte Programm:
+    (96 Lines-of-Code (loc) versus 120 loc)
+- Dennoch wie bei Hanoi: unübersichtlicher, da Bedeutung der Variablen in allen Methoden bekannt sein muss
+- Beispiel: print-Methode bekommt zwei String-Arrays übergeben
+- Frage: enthält das erste Array die Vor- oder die Nachnamen?
+- Das ist fehleranfällig und macht Änderungen schwer
+_____________________________________________________________________________
+                Klassenvariablen
+- analog zu Objekt- und Klassenmethoden:
+    Variablen werden unterschieden zwischen:
+Objektvariablen:
+    - gehören zu einem Objekt
+    - werden zusammen mit dem Objekt erschaffen
+    - existieren solange das Objekt existiert
+    - behalten ihren Wert über Aufrufe von Methoden
+Klassenvariablen:
+    - gehören zu einer Klasse
+    - werden zum "Programmanfang" erschaffen
+    - existieren immer
+    - behalten ihren Wert über Aufrufe von Methoden
+    - für eine Klasse gibt es sich nur 1-mal, unabhängig von der Anzahl der Objekte
+_____________________________________________________________________________
+                Klassenvariablen (Fort.)
+class A{
+           int m_i; // Objektvariable
+    static boolean g_b; // Klassenvariable
+}
+
+- auf Klassenvariablen kann direkt durch Voranstellen des Klassennamens zugegriffen werden
+- es muss kein Objekt existieren
+class A{
+    static int g_i = 13; // Klasse mit Klassenvariable
+}
+public class ClassVar{
+    public static void main(String[] args){
+        System.out.println(A.g_i); // Referenziert die Klassenvariable der Klasse A
+    }
+}
+_____________________________________________________________________________
+                Klassenvariablen Beispiel
+- Innerhalb einer Klasse auf Klassenvariablen direkt zugreifen, ohne Klassennamen voranstellen
+- Klassenmethoden außerhalb durch Voranstellen von Klassenname aufrufen
+class A{
+    public static void doit(){ // Klasse mit Klassenmethode und ...
+        System.out.println(g_i); // Klassenvariable wird direkt referenziert
+    }
+    static int g_i = 13; // ... Klassenvariable
+}
+public class ClassVar2{
+    public static void main(String[] args){
+        A.doit(); // Referenziert die Klassenmethode der Klasse A
+    }
+}
+_____________________________________________________________________________
+                Klassenvariablen Beispiel
+- Klassenvariablen können auch aus Objektmethoden referenziert werden
+- sie können auch durch ein Objekt referenziert werden
+
+class A{
+   public void doit(){ // Klasse mit Objektmethode und ...
+      System.out.println(g_i); // Klassenvariable wird direkt referenziert
+   }
+   static int g_i = 13; // ... Klassenvariable
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      A juhu = new A();
+      juhu.g_i = 42; // *
+      juhu.doit(); // * Referenziert Klassenvariable und Objektmethode der Klasse A
+   }
+}
+_____________________________________________________________________________
+                Klassenvariablen Beispiel
+- eine Klassenvariable lebt schon vor dem ersten Objekt der Klasse
+class A{
+   public void doit(){
+      System.out.println(g_i);
+   }
+   static int g_i = 13;
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      A.g_i = 42; // Referenziert die Klassenvariable
+      A juhu = new A();
+      juhu.doit(); // Referenziert die Objektmethode
+   }
+}
+- eine Klassenvariable überlegt jedes Objekt
+- alle Objekte einer Klasse teilen sich die Klassenvariablen
+- dies gilt auch für Vererbung
+_____________________________________________________________________________
+                Klassenvariablen Initialisierung
+• Klassenvariablen werden genau wie Objektvariablen nur einmal initialisiert
+• dies passiert, wenn die Klasse das 1. Mal geladen wird
+• die Klassenvariablen werden gemäß ihrer Deklaration mit dem Standardwert initialisiert oder durch den Ausdruck, der bei der Deklaration angegeben ist
+class A{
+    static int g_i = 34;
+    static int g_j = 3*g_i;
+}
+
+• sollen Klassenvariablen komplexer initialisiert werden, so benötigt man etwas Ähnlich wie einen Konstruktor für Objekte
+• gesucht ist ein Konstruktor für Klassen
+• dies wird durch einen Block erreicht, der mit dem Schlüsselwort static beginnt und in der Klasse enthalten ist
+
+class A{
+    static int g_i;
+    static int g_j;
+    static {
+        g_i = 34;
+        g_j = 3* g_i;
+    }
+}
+public class Vorlesung{
+    public static void main(String[] args){
+        System.out.println(A.g_i);
+    }
+}
+_____________________________________________________________________________
+                Klassenvariablen Initialisierung
+- ein Klassenkonstruktor wird einmal ausgeführt
+- dies passiert unmittelbar vor der 1. Benutzung der Klasse
+- Benutzung einer Klasse kann auch das Erzeugen eines Objekts sein
+- Wird die Klasse nicht benutzt, wird der Klassenkostruktor auch nicht ausgeführt
+- abgeleitete Klassen verhalten sich bzgl. ihrer Objekt- und Klassenkonstruktoren analog
+- erst wird der Klassenkonstruktor der Basisklasse, dann der abgeleiteten Klasse ausgeführt
+_____________________________________________________________________________
+                Klassen- und Objektvariablen und -methoden: Zusammenfassung
+- Klassenmethoden & -variablen werden durch static gekennzeichnet       -           - Objektmethoden & -variablen werden ohne static spezifiziert
+- sie gehören zur Klasse                                                -           - sie gehören zum Objekt
+- sie können ohne Objekt verwendet werden                               -           - sie können nur mit einem Objekt verwendet werden
+- es gibt sie nur einmal, unabhängig von Anzahl der Objekte             -           - jedes Objekt hat seine eigenen Objektmethoden & -variablen
+- sie leben immer                                                       -           - sie leben solange das zugehörige Objekt lebt
+- Initialisierung durch Klassenkonstruktoren                            -           - Initialisierung durch Objektkonstruktoren
+_____________________________________________________________________________
+                Vorlesung 11/2 - Modifier
+- Objektvariablen stellen Zustand eines Objekts dar
+- Oft stellen nur bestimmte Variablenbelegungen einen gültigen Objektzustand dar
+- Werden Variabeln von außerhalb des Objekts verändert, kann das Objekt einen illegalen Zustand haben
+- um von Außen den Objektzustand sicher zu verändern, muss man die Klasse gut kennen
+- dies widerspricht dem Konzept der Abstraktion
+- man möchte den Inhalt einer Klasse/Objekt nicht kennen
+- es sollte daher verboten sein, Variablen außerhalb eines Objekts verändern zu können
+- manchmal möchte man die Variablen direkt lesen können: z.B. .length Variable von Arrays
+- daher kann Programmierer spezifizieren, welche Variable außerhalb der Klasse sichtbar ist
+
+A juhu = new A();
+juhu.m_i = 0;
+
+- Modifier: Um diese Art der Zugriffsrechte zu regeln
+- diese stehen vor jeder Objekt- und Klassenmethode und -variable und vor jeder Klasse
+- sie regeln, ob auf Elemente zugegriffen werden darf, und wenn ja, ob es nur lesend oder auch schreibend ist
+
+Die Zugriffsrechte werden geregelt durch die 4 Modifier:
+1. public:
+alle anderen dürfen auf dieses Element zugreifen
+
+2. private:
+nur die eigene Klasse darf auf die Elemente zugreifen; die abgeleiteten Klassen und die Erzeuger können nicht darauf zugreifen
+
+3. protected:
+die eigene und die abgeleiteten Klassen können auf die Elemente zugreifen;
+die Erzeuger können nicht darauf zugreifen;
+alle im gleichen Paket können darauf zugreifen
+
+4. ohne Modifier (Standard):
+alle im gleichen Paket können darauf zugreifen;
+außerhalb des Pakets sind sie nicht zugreifbar;
+sie liegen somit zwischen public und protected
+
+- Auf Elemente, die als private deklariert sind, kann nur von der eigenen Klasse und von anderen Objekten der gleichen Klasse zugegriffen werden.
+_____________________________________________________________________________
+                Modifier: final
+- ein anderer Modifier ist das final
+- es kann vor Klassen, Methoden und Variablen geschrieben werden
+- es besagt, dass das nachfolgende Element in gewissem Sinne konstant ist
+- konstante Elemente können nur einmal einen Wert bekommen und ihn später nicht mehr ändern
+- final Variablen müssen nicht direkt in der Deklaration initialisiert werden
+class A{
+   A(int i){
+      m_i = i; // m_i wird das 1. und einzige Mal beschrieben
+   }
+   void doit(){
+      //m_i = 42;
+      System.out.println(m_i);
+   }
+   private final int m_i; // noch kein Wert zugewiesen
+}
+public class Vorlesung{
+   public static void main(String[] arg){
+      A a1 = new A(34);
+      a1.doit();
+   }
+}
+
+- final kann auch für Parameter verwendet werden
+- in diesem Fall kann dem Parameter in der Methode kein Wert zugewiesen werden
+
+public class Final3{
+    public static void doit(final int i){ // i bekommt einen Wert beim Aufruf zugewiesen
+        // i = 0; // dieser kann nicht verändert werden
+        System.out.println(i);
+    }
+    public static void main(String[] args){
+        doit(78);
+    }
+}
+
+- final Variablen, die Objekte speichern, kann kein neues Objekt zugewiesen werden
+- diese Objekte dürfen sich aber ändern
+
+class A{
+    void doit(){
+        System.out.println(++m_i); // doit ändert das Objekt
+    }
+    private int m_i = 13;
+}
+public class Final4{
+    public static void main(String[] args){
+        final A juhu = new A(); // juhu ist konstant
+        juhu.doit(); // *
+        juhu.doit(); // * das Objekt von juhu kann sich aber ändern
+        // juhu = new A(); // juhu kann aber kein neues Objekt zugewiesen werden
+    }
+}
+
+- analoges gilt für Arrays
+
+public class Final5{
+    public static void main(String[] args){
+        final int[] juhu = new int[6]; // juhu ist ein konstantes int-Array
+        juhu[3] = 23; // *
+        juhu[3] = 42; // * die einzelnen Elemente sind nicht konstant
+        // juhu = new int[4]; // juhu kann aber kein neues int-Array zugewiesen werden
+    }
+}
+
+- wird eine Klasse als final deklariert, so kann von ihr nicht weiter abgeleitet werden
+- Klassen als konstant zu deklarieren erlaubt es dem Java-Compiler, effizienteren Code zu erzeugen
+
+class A{
+    ...
+}
+final class B extends A{
+
+}
+class C extends B{ // Fehler: von B kann nicht weiter abgeleitet werden
+    ...
+}
+_____________________________________________________________________________
+                Destruktoren
+- wenn ein Objekt einer Klasse erzeugt wird, wird sein Konstruktor aufgerufen (wenn es existiert)
+- im Konstruktor können wichtige Datenstrukturen initialisiert werden
+- manchma ist es sinnvoll, beim Sterben eines Objekts noch Code auszuführen
+- dies ist für Sprachen wie C++ viel wichtiger als für Java
+- hierzu kann man zu einer Klasse einen sogenannten Destruktor definieren
+// ab Java 9 sind Destruktoren als depricated markiert,
+// sprich: NICHT BENUTZEN
+
+- ein Destruktor hat immer die Form
+    protected void finalize() { ... }
+- da das Sterben eines Objekts nicht vom Benutzer gestartet wird, kann dem Destruktor keine Parameter übergeben werden
+
+class A{ // Klasse mit ...
+   A(){ // ... Konstruktor ...
+      System.out.println("A+");
+   }
+   protected void finalize(){ // ... und Destruktor
+      System.out.println("A-");
+   }
+}
+public class Vorlesung{
+   public static void main(String[] args){
+      new A(); // neues Objekt wird erzeugt und ?
+   }
+}
+
+- Java verfügt über ein automatisches Speichermanagement
+- Objekte sterben nicht sofort wenn ihre Sichtbarkeit verloren geht
+
+class A{ ... }
+public class Ende1{
+    static void doit(){
+        A juhu = new A(); // Hier entsteht ein neues A
+    } // hier sieht man es nicht mehr
+    public static void main(String[] args){
+        doit();
+    }
+}
+- vielmehr wird regelmäßig (oder auch unregelmäßig) vom Java-Interpreter ein Aufräumen gestartet
+- es ist unsicher, ob es überhaupt gestartet wird, und wenn, wann und wie oft
+
+class A{
+    public A(){
+        System.out.println("ich bin das " + ++g_i + ".A");
+    }
+    protected void finalized(){
+        System.out.println("Ich sterbe. Jetzt gibt es nur noch " + --g_i + " meiner Art.");
+    }
+    static int g_i = 0; // in Klassenvariable wird die Anzahl der Objekte gezählt
+}
+public class Vorlesung{
+    public static void main(String[] args){
+        for(int i = 0; i < 1200; ++i)
+            new A(); // 1200 A-Objekte werden erzeugt, deren Sichtbarkeit gleich wieder gelöscht
+    }
+}
+_____________________________________________________________________________
+                Überladen und Überlagern von Methoden
+- Methoden können überladen und überlagert werden
+- klingt ähnlich, gemeint sind aber zwei unterschiedliche Konzepte der
+    objektorientierte Programmierung
+
+Überladen:                                              Überlagern:
+- 2 unterschiedliche Methoden in einer Klasse           - 2 unterschiedliche Methoden in 2 voneinander abgeleiteten Methoden
+- beide haben denselben Namen                           - beide haben denselben Namen
+- sie unterscheiden sich in ihren Parametern            - sie haben die gleichen Parametern
+_____________________________________________________________________________
+                Überladen von Methoden
+Methoden werden überladen, wenn ...
+- verschiedene Methoden mit unterschiedlichen Parametern eine ähnliche Funktionalität ausführen
+- Beispiel:
+    - eine Klasse, die einen mathematischen Vektor implementiert
+    - diese braucht Multiplikationsmethoden
+    - eine nummt einen Vektor und multipliziert ihn mit dem aktuellen Vektor (Vektormultiplikation)
+    - eine andere nimmt eine reelle Zahl und multipliziert diese mit dem aktuellen Vektor (Skalarmultiplikation)
+    - beide Mehthoden sollen mult heißen
+
+public class Vorlesung{
+    public Vector mult(float f){
+        // berechne eine Skalarmultiplikation
+        // mit dem aktuellen Objekt
+    }
+    public Vector mult(Vector v){
+        // berechne eine Vektormultiplikation
+        // mit dem aktuellen Objekt
+    }
+
+    // 2 verschiedene Methoden mit gleichen Namen in einer Klasse
+    // sie unterscheiden sich in den Typen ihrer Parametern
+}
+
+- welche der Methoden ausgeführt werden, wird beim Aufruf anhand der Type herausgefunden
+
+public class Vorlesung{
+    public Vector mult(float f){
+        // berechne eine Skalarmultiplikation
+        // mit dem aktuellen Objekt
+    }
+    public Vector mult(Vector v){
+        // berechne eine Vektormultiplikation
+        // mit dem aktuellen Objekt
+    }
+
+    Vector v1, v2, v3, v4;
+    v2 = v1.mult(v4);
+    v3 = v2.mult(3.5f);
+}
+
+- zur Compilezeit wird anhand des Typs festgestellt, welche der überladenen Methoden aufgerufen wird
+
+class A{
+    void doit(int i){
+        System.out.println("ich bekimme ein int");
+    }
+    void doit(double b){
+        System.out.println("ich bekomme in double");
+    }
+}
+public class Vorlesung{
+    public static void main(String[] args){
+        A juhu = new A();
+        juhu.doit(23);
+        juhu.doit(23.0);
+        // doit ist überladen
+        // hier ist jedoch klar, welches doit jeweils aufgerufen werden muss
+    }
+}
+
+- überladen funktioniert auch für Klassenmethoden
+- kann anhand des Typs nicht eindeutig die Methode identifiziert werden, so gibt es einen Compilerfehler
+
+public class Vorlesung{
+    static void doit(short s){
+        System.out.println("ich bekomme ein short");
+    }
+    static void doit(byte b){
+        System.out.println("ich bekomme ein byte");
+    }
+    public static void main(String[] args){
+        byte b = 23;
+        doit(b); // hier ist klar, welches doit gemeint ist
+        //doit(23); // hier nicht, da 23 ein int ist, kein short oder byte
+    }
+}
+
+- überladene Methoden können sich auch in ihrem Rückgabetyp unterscheiden
+
+public class Vorlesung{
+    static int doit(short s){
+        System.out.println("ich bekomme ein short");
+        return 42;
+    }
+    static void doit(byte b){
+        System.out.println("ich bekomme ein byte");
+    }
+    public static void main(String[] args){
+        byte b = 23;
+        short s = 34;
+        doit(b); // dieses doit liefert nichts zurück
+        System.out.println(doit(s)); // dieses doit liefert einen int Wert zurück
+    }
+}
+
+- es reicht nicht, dass sich überladenen Methoden nur im Rückgabetyp unterscheiden
+
+public class Vorlesung{
+    static int doit(int i){
+        return 42;
+    }
+    static boolean doit(int i){
+        return false;
+    }
+    public static void main(String[] args){
+        int i = doit(23);       // *
+        boolean b = doit(13);   // * hier ist in beiden Fällen unklar, welches doit gemeint ist
+    }
+}
+
+- für überladene Methoden reicht auch eine unterschiedliche Anzahl von Parametern aus, um sich zu unterscheiden
+
+public class Vorlesung{
+    static int doit(int i, int j){ // *
+        return 42;
+    }
+    static boolean doit(int i){ // * beide doit unterscheiden sich durch die Anzahl der Parameter
+        return false;
+    }
+    public static void main(String[] args){
+        int i = doit(23, 24); // *
+        boolean b = doit(13);   // * hier ist klar, welches doit gemeint ist
+        System.out.println(i + "\t" + b);
+    }
+}
+
+- durch das Überladen von Methoden kann man den Paramern Standardwerte übergeben
+
+public class Vorlesung{
+    static void doit(int i, int j){
+        System.out.println("i: " + i + "\tj:" + j);
+    }
+    static void doit(int i){
+        doit(i, 23);
+    }
+    static void doit(){
+        doit(42);
+    }
+    public static void main(String[] args){
+        doit();
+        doit(3);
+        doit(56, 107);
+    }
+}
+_____________________________________________________________________________
+                Überladen und Überlagern von Methoden (Fort.)
+Überladen:                                                  Überlagern:
+- 2 unterschiedliche Methoden in einer Klasse               - 2 unterschiedliche Methoden in 2 voneinander abgeleiteten Klassen
+- beide haben denselben Namen                               - beide haben denselben Namen
+- sie unterscheiden sich in ihren Parametern                - sie haben die gleichen Parametern
+
+Zusammen mit Vererbung und Konstruktoren ist die Überlagerung eines der wichtigsten Konzepte in der OOP
+
+
+_____________________________________________________________________________
+                Überlagern von Methoden
+- Methoden werden überlagert, indem eine Methode mit gleichem Namen und gleichen Parametern in einer abgeleiteten Klasse
+    nochmals implementiert wird
+- Frage: welche der beiden Methoden wird ausgeführt?
+- Bsp.:
+
+class A{
+    void doit(){ // *
+        System.out.println("ich bin doit von A");
+    }
+}
+class B extends A{
+    void doit(){ // * gleiche Signatur
+        System.out.println("ich bin doit von B");
+    }
+}
+
+- durch das Ableiten erbt die Klasse B von A die Methode doit
+- druch die Neudefinition von doit in B wird die ererbte Methode überlagert
+
+
+
+
+
+
+
+
+
+
